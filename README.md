@@ -17,7 +17,7 @@ Wait for yolo to generete some frames before executing, a frame rate higher than
 
  At docker's bash start streaming from png's folder:
 
-  GST_DEBUG=3 gst-launch-1.0 -e multifilesrc location="/usr/src/app/runs/detect/exp21/frames/video%d.png" index=2 caps="image/png,framerate=10/1,width=640,height=480" ! pngdec ! videoconvert  ! videoscale ! video/x-raw,width=680,height=480  ! autovideosink 
+    GST_DEBUG=3 gst-launch-1.0 -e multifilesrc location="/usr/src/app/runs/detect/exp21/frames/video%d.png" index=2 caps="image/png,framerate=10/1,width=640,height=480" ! pngdec ! videoconvert  ! videoscale ! video/x-raw,width=680,height=480  ! autovideosink 
 
 "autovideosink" will display the stream in the screen (as docker is running in a windows host vcxsrv is needed in the host and running "export DISPLAY=<hostIP>:0), but you may use tdp or udp with gstream or even the gst-rtsp )
 
