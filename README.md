@@ -27,6 +27,8 @@ Build docker image with everything installed and configured,
 
 Make it work with tcp, udp and rtsp,
 
-Start stream directly from source code using opencv images with gst, no more need to save each frame.
+Start stream directly from source code using opencv images with gst, no more need to save each frame,
+
+Make detect.py accepts gst stream as an input, since they are really faster.
 
 
