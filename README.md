@@ -24,7 +24,9 @@ Wait for yolo to generete some frames before executing, a frame rate higher than
 WIP:
 
 Build docker image with everything installed and configured,
+
 Make it work with tcp, udp and rtsp,
+
 Start stream directly from source code using opencv images with gst, no more need to save each frame.
 
 
