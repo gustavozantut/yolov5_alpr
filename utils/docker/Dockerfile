@@ -10,7 +10,7 @@ RUN rm -rf /opt/pytorch  # remove 1.2GB dir
 ADD https://ultralytics.com/assets/Arial.ttf https://ultralytics.com/assets/Arial.Unicode.ttf /root/.config/Ultralytics/
 
 # Install linux packages
-RUN apt update && apt install --no-install-recommends -y zip htop screen libgl1-mesa-glx
+RUN apt-get update && apt install --no-install-recommends -y zip htop screen libgl1-mesa-glx
 
 # Install pip packages
 COPY requirements.txt .
@@ -28,7 +28,7 @@ RUN pkg-config --cflags --libs gstreamer-1.0
 
 # Copy contents
 # COPY . /usr/src/app  (issues as not a .git directory)
-RUN git clone https://github.com/gustavozantut/yolov5_alpr /usr/src/app
+RUN git clone https://github.com/gustavozantut/yolov5_alpr/ usr/src/app
 
 # Set environment variables
 ENV OMP_NUM_THREADS=8
