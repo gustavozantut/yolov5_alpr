@@ -49,7 +49,7 @@ from utils.torch_utils import select_device, smart_inference_mode
 @smart_inference_mode()
 def run(
         weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
-        source=ROOT / 'rtsp://192.168.0.23:8554/video',  # file/dir/URL/glob, 0 for webcam
+        source='rtsp://192.168.0.23:8554/video',  # file/dir/URL/glob, 0 for webcam
         data=ROOT / 'data/BRPlates.yaml',  # dataset.yaml path
         imgsz=(640, 640),  # inference size (height, width)
         conf_thres=0.25,  # confidence threshold
@@ -218,7 +218,7 @@ def run(
 def parse_opt():
     parser = argparse.ArgumentParser()
     parser.add_argument('--weights', nargs='+', type=str, default=ROOT / 'yolov5s.pt', help='model path(s)')
-    parser.add_argument('--source', type=str, default=ROOT / 'rtsp://192.168.0.23:8554/video', help='file/dir/URL/glob, 0 for webcam')
+    parser.add_argument('--source', type=str, default='rtsp://192.168.0.23:8554/video', help='file/dir/URL/glob, 0 for webcam')
     parser.add_argument('--data', type=str, default=ROOT / 'data/BRPlates.yaml', help='(optional) dataset.yaml path')
     parser.add_argument('--imgsz', '--img', '--img-size', nargs='+', type=int, default=[640], help='inference size h,w')
     parser.add_argument('--conf-thres', type=float, default=0.25, help='confidence threshold')
