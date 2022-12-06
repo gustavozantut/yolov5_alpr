@@ -9,7 +9,7 @@ What is working:
 
 Those frames can be streamed via gst from inside the yolo docker using the following commands:
 
-==============================================================PREPARING YOLO IMAGE==========================================================
+=======================PREPARING YOLO IMAGE====================================
 Simply:
 
     docker run --ipc=host --gpus all -it guhzantut/yolov5_live_gst:latest
@@ -26,19 +26,19 @@ Instaling gst on docker(pull my docker image: guhzantut/yolov5_live_gst:latest a
 
     pkg-config --cflags --libs gstreamer-1.0
  
- ================================SETTING UP ENVIROMENT TO RECEIVE GST STREAM VIA DOCKER================================================================
+ ================SETTING UP ENVIROMENT TO RECEIVE GST STREAM VIA DOCKER=====================
  
   Exporting the display to vcxsrv for windows (Just tested in Windows 11  with vcxsrv but may work on ubuntu with x11 too).
 
     export DISPLAY=<display IP>:<display port> (usually <host ip>:0)
     
-==================================================RUN THE DETECTION====================================================================================
+===========================RUN THE DETECTION=================================
 
     python detect.py --source rtsp://<rtspServerIP>:<rtspServerPort>/stream --save-frame
 
   Wait for yolo to generete some frames before starting the stream( gst's frame rate higher than yolo's processing capacity will eventually  make the stream run out of frames and closing).
 
-=============================================================START STREAMING====================================================================
+===================START STREAMING=============================
 
   At docker's bash start streaming from frames's folder:
 
