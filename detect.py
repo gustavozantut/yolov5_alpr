@@ -77,7 +77,7 @@ def run(
         hide_conf=False,  # hide confidences
         half=False,  # use FP16 half-precision inference
         dnn=False,  # use OpenCV DNN for ONNX inference
-        save_each_n_crops=1, #Saving crops frequency
+        save_crops_each_n_frames=1, #Saving crops frequency
 ):
     source = str(source)
     save_img = not nosave and not source.endswith('.txt')  # save inference images
@@ -107,8 +107,9 @@ def run(
         bs = 1  # batch_size
     vid_path, vid_writer = [None] * bs, [None] * bs
 
+    frames_since_last_saved = min(save_crops_each_n_frames, 1000) #First frame will always save crops
+
     # Run inference
-    crops_since_last_saved = 1
     model.warmup(imgsz=(1 if pt else bs, 3, *imgsz))  # warmup
     seen, windows, dt = 0, [], (Profile(), Profile(), Profile())
     for path, im, im0s, vid_cap, s in dataset:
@@ -163,17 +164,15 @@ def run(
                         line = (cls, *xywh, conf) if save_conf else (cls, *xywh)  # label format
                         with open(f'{txt_path}.txt', 'a') as f:
                             f.write(('%g ' * len(line)).rstrip() % line + '\n')
-
                     if save_img or save_crop or view_img:  # Add bbox to image
                         c = int(cls)  # integer class
                         label = None if hide_labels else (names[c] if hide_conf else f'{names[c]} {conf:.2f}')
                         annotator.box_label(xyxy, label, color=colors(c, True))
-                    if save_crop and save_each_n_crops%crops_since_last_saved==0:
-                        save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
-                        print(crops_since_last_saved,"box saved")
-                        crops_since_last_saved += 1
-                    if save_detected_frame:
-                        save_one_frame(annotator.result(), file=save_dir / 'frames'/ f'{p.stem}.png')
+                    if save_crop and (frames_since_last_saved%save_crops_each_n_frames==0): #Check is frame is 'savable'
+                        save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True) #Save crops from detected frame
+                if save_detected_frame: #Save Frame if detected any class
+                    save_one_frame(annotator.result(), file=save_dir / 'frames'/ f'{p.stem}.png')
+                    
 
 
             # Stream results
@@ -206,7 +205,12 @@ def run(
                     vid_writer[i].write(im0)
                     if save_frame:
                         save_one_frame(im0, file=save_dir / 'frames'/ f'{p.stem}.png')
-
+                        
+            #Counting frames to know when to save them on --save-crops-each-n-frames arg
+            if frames_since_last_saved==save_crops_each_n_frames:
+                frames_since_last_saved=0
+            frames_since_last_saved +=1
+                
         # Print time (inference-only)
         LOGGER.info(f"{s}{'' if len(det) else '(no detections), '}{dt[1].dt * 1E3:.1f}ms")
 
@@ -250,7 +254,7 @@ def parse_opt():
     parser.add_argument('--hide-conf', default=False, action='store_true', help='hide confidences')
     parser.add_argument('--half', action='store_true', help='use FP16 half-precision inference')
     parser.add_argument('--dnn', action='store_true', help='use OpenCV DNN for ONNX inference')
-    parser.add_argument('--save-each-n-crops', type=int, default=1, help='frequency for saving crops(trying to decrease video det. time)')
+    parser.add_argument('--save-crops-each-n-frames', type=int, default=1, help='frequency for saving crops(trying to decrease video det. time)')
     opt = parser.parse_args()
     opt.imgsz *= 2 if len(opt.imgsz) == 1 else 1  # expand
     print_args(vars(opt))
