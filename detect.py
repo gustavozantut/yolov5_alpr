@@ -168,10 +168,12 @@ def run(
                         c = int(cls)  # integer class
                         label = None if hide_labels else (names[c] if hide_conf else f'{names[c]} {conf:.2f}')
                         annotator.box_label(xyxy, label, color=colors(c, True))
-                    if save_crop and save_each_n_crops%crops_since_last_saved==0:
+                    if save_crop and (save_each_n_crops%crops_since_last_saved==0):
                         save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
                         print(crops_since_last_saved,"box saved")
                         crops_since_last_saved += 1
+                        if crops_since_last_saved == save_each_n_crops:
+                            crops_since_last_saved=1
                     if save_detected_frame:
                         save_one_frame(annotator.result(), file=save_dir / 'frames'/ f'{p.stem}.png')
 
