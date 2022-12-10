@@ -210,8 +210,7 @@ def run(
             #Counting frames to know when to save them on --save-crops-each-n-frames arg
             if frames_since_last_saved==save_crops_each_n_frames:
                 frames_since_last_saved=0
-            else:
-                frames_since_last_saved +=1
+            frames_since_last_saved +=1
                 
         # Print time (inference-only)
         LOGGER.info(f"{s}{'' if len(det) else '(no detections), '}{dt[1].dt * 1E3:.1f}ms")
