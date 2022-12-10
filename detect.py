@@ -170,6 +170,7 @@ def run(
                         annotator.box_label(xyxy, label, color=colors(c, True))
                     if save_crop and (frames_since_last_saved%save_crops_each_n_frames==0): #Check is frame is 'savable'
                         save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True) #Save crops from detected frame
+                        print("crop saved")
                 if save_detected_frame: #Save Frame if detected any class
                     save_one_frame(annotator.result(), file=save_dir / 'frames'/ f'{p.stem}.png')
                     
