@@ -28,7 +28,7 @@ RUN pkg-config --cflags --libs gstreamer-1.0
 
 # Copy contents
 # COPY . /usr/src/app  (issues as not a .git directory)
-RUN git clone https://github.com/gustavozantut/yolov5_alpr/save-each-n-crops /usr/src/app
+RUN git clone https://github.com/gustavozantut/yolov5_alpr/ /usr/src/app
 
 # Set environment variables
 ENV OMP_NUM_THREADS=8
