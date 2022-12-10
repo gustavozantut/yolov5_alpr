@@ -107,7 +107,7 @@ def run(
         bs = 1  # batch_size
     vid_path, vid_writer = [None] * bs, [None] * bs
 
-    frames_since_last_saved = min(save_crops_each_n_frames, 1000) #First frame will always save crops
+    frames_since_last_saved = max(1,min(save_crops_each_n_frames, 1000)) #First frame will always save crops
 
     # Run inference
     model.warmup(imgsz=(1 if pt else bs, 3, *imgsz))  # warmup
