@@ -560,9 +560,9 @@ def save_one_box(xyxy, im, file=Path('im.jpg'), gain=1.02, pad=10, square=False,
     return crop
 
 def save_one_frame(im, file=Path('im.png')):
-		522	    # Save frame
-		523	    file.parent.mkdir(parents=True, exist_ok=True)  # make directory
-		524	    f = str(increment_path(file).with_suffix('.png'))
-		525	    # cv2.imwrite(f, crop)  # save BGR, https://github.com/ultralytics/yolov5/issues/7007 chroma subsampling issue
-		526	    Image.fromarray(im[..., ::-1]).save(f, quality=95, subsampling=0)  # save RGB
-		527	    return im
+    # Save frame
+    file.parent.mkdir(parents=True, exist_ok=True)  # make directory
+    f = str(increment_path(file).with_suffix('.png'))
+	# cv2.imwrite(f, crop)  # save BGR, https://github.com/ultralytics/yolov5/issues/7007 chroma subsampling issue
+    Image.fromarray(im[..., ::-1]).save(f, quality=95, subsampling=0)  # save RGB
+	return im
