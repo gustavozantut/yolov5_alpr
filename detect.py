@@ -209,8 +209,8 @@ def run(
                         save_path = str(Path(save_path).with_suffix('.mp4'))  # force *.mp4 suffix on results videos
                         vid_writer[i] = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*'mp4v'), fps, (w, h))
                     vid_writer[i].write(im0)
-                    if save_frame:
-                        save_one_frame(im0, file=save_dir / 'frames'/ f'{p.stem}.png')
+            if save_frame:
+                save_one_frame(im0, file=save_dir / 'frames'/ f'{p.stem}.png')
                         
             #Counting frames to know when to save them on --save-crops-each-n-frames arg
         if frames_since_last_saved==save_crops_each_n_frames:
