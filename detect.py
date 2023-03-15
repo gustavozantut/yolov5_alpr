@@ -176,9 +176,11 @@ def run(
                         c = int(cls)  # integer class
                         label = None if hide_labels else (names[c] if hide_conf else f'{names[c]} {conf:.2f}')
                         annotator.box_label(xyxy, label, color=colors(c, True))
-                    if save_crop and (frames_since_last_saved%save_each_n_frames==0): #Check is frame is 'savable':
+                        
+                    if save_crop and (frames_since_last_saved==save_each_n_frames): #Check is frame is 'savable':
                         save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
-                if save_detected_frame: #Save Frame if detected any class
+                        
+                if save_detected_frame and (frames_since_last_saved==save_each_n_frames): #Save Frame if detected any class
                     save_one_frame(annotator.result(), file=save_dir / 'frames'/ f'{p.stem}.png')
 
             # Stream results
@@ -209,11 +211,13 @@ def run(
                         save_path = str(Path(save_path).with_suffix('.mp4'))  # force *.mp4 suffix on results videos
                         vid_writer[i] = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*'mp4v'), fps, (w, h))
                     vid_writer[i].write(im0)
-            if save_frame:
+                    
+            if save_frame and (frames_since_last_saved==save_each_n_frames):
                 save_one_frame(im0, file=save_dir / 'frames'/ f'{p.stem}.png')
+
                         
             #Counting frames to know when to save them on --save-crops-each-n-frames arg
-        if frames_since_last_saved%save_each_n_frames==0:
+        if frames_since_last_saved==save_each_n_frames:
             frames_since_last_saved=0
         frames_since_last_saved +=1
 
