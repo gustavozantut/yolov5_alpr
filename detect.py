@@ -81,7 +81,7 @@ def run(
         vid_stride=1,  # video frame-rate stride
         save_frame = False, #save frame from video
 		save_detected_frame = False, #save frame from video when plate detected
-        save_crops_each_n_frames=1, #Saving crops frequency
+        save_each_n_frames=1, #Saving crops frequency
 ):
     source = str(source)
     save_img = not nosave and not source.endswith('.txt')  # save inference images
@@ -114,7 +114,7 @@ def run(
         dataset = LoadImages(source, img_size=imgsz, stride=stride, auto=pt, vid_stride=vid_stride)
     vid_path, vid_writer = [None] * bs, [None] * bs
     
-    frames_since_last_saved = max(1,min(save_crops_each_n_frames, 1000)) #First frame will always save crops
+    frames_since_last_saved = max(1,min(save_each_n_frames, 1000)) #First frame will always save crops
 
     # Run inference
     model.warmup(imgsz=(1 if pt or model.triton else bs, 3, *imgsz))  # warmup
@@ -172,11 +172,11 @@ def run(
                         with open(f'{txt_path}.txt', 'a') as f:
                             f.write(('%g ' * len(line)).rstrip() % line + '\n')
 
-                    if save_img or save_crop or view_img or save_frame:  # Add bbox to image
+                    if save_img or save_crop or view_img or save_frame or save_detected_frame:  # Add bbox to image
                         c = int(cls)  # integer class
                         label = None if hide_labels else (names[c] if hide_conf else f'{names[c]} {conf:.2f}')
                         annotator.box_label(xyxy, label, color=colors(c, True))
-                    if save_crop and (frames_since_last_saved%save_crops_each_n_frames==0): #Check is frame is 'savable':
+                    if save_crop and (frames_since_last_saved%save_each_n_frames==0): #Check is frame is 'savable':
                         save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
                 if save_detected_frame: #Save Frame if detected any class
                     save_one_frame(annotator.result(), file=save_dir / 'frames'/ f'{p.stem}.png')
@@ -213,7 +213,7 @@ def run(
                 save_one_frame(im0, file=save_dir / 'frames'/ f'{p.stem}.png')
                         
             #Counting frames to know when to save them on --save-crops-each-n-frames arg
-        if frames_since_last_saved==save_crops_each_n_frames:
+        if frames_since_last_saved==save_each_n_frames:
             frames_since_last_saved=0
         frames_since_last_saved +=1
 
