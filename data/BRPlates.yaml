@@ -18,7 +18,7 @@ test: # test images (optional)
 
 # Classes
 names:
-  0: placa carro
-  1: placa moto
-  2: placa carro mercosul
-  3: placa moto mercosul
+  0: placa_carro
+  1: placa_moto
+  2: placa_carro_mercosul
+  3: placa_moto_mercosul
