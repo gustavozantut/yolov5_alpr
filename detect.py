@@ -52,7 +52,7 @@ from utils.torch_utils import select_device, smart_inference_mode
 
 @smart_inference_mode()
 def run(
-        weights=ROOT / 'runs/train/680-64-150-n/weights/best.pt',  # model path or triton URL
+        weights='/usr/src/app/runs/train/680-64-150-n/weights/best.pt',  # model path or triton URL
         source='rtsp://192.168.0.101:8554/video',  # file/dir/URL/glob/screen/0(webcam)
         data=ROOT / 'datasets/BRPlates.yaml',  # dataset.yaml path
         imgsz=(704, 704),  # inference size (height, width)
@@ -236,7 +236,7 @@ def run(
 
 def parse_opt():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--weights', nargs='+', type=str, default=ROOT / 'runs/train/680-64-150-n/weights/best.pt', help='model path or triton URL')
+    parser.add_argument('--weights', nargs='+', type=str, default='/usr/src/app/runs/train/680-64-150-n/weights/best.pt', help='model path or triton URL')
     parser.add_argument('--source', type=str, default='rtsp://192.168.0.101:8554/video', help='file/dir/URL/glob, 0 for webcam')
     parser.add_argument('--data', type=str, default=ROOT / 'datasets/BRPlates.yaml', help='(optional) dataset.yaml path')
     parser.add_argument('--imgsz', '--img', '--img-size', nargs='+', type=int, default=[704], help='inference size h,w')
