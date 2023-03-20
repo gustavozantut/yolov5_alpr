@@ -33,7 +33,7 @@ import os
 import platform
 import sys
 from pathlib import Path
-
+from datetime import datetime
 import torch
 
 FILE = Path(__file__).resolve()
@@ -52,26 +52,26 @@ from utils.torch_utils import select_device, smart_inference_mode
 
 @smart_inference_mode()
 def run(
-        weights=ROOT / 'yolov5s.pt',  # model path or triton URL
+        weights=ROOT / 'runs/train/680-64-150-n/weights/best.pt',  # model path or triton URL
         source='rtsp://192.168.0.101:8554/video',  # file/dir/URL/glob/screen/0(webcam)
-        data=ROOT / 'data/BRPlates.yaml',  # dataset.yaml path
-        imgsz=(640, 640),  # inference size (height, width)
-        conf_thres=0.25,  # confidence threshold
-        iou_thres=0.45,  # NMS IOU threshold
-        max_det=1000,  # maximum detections per image
+        data=ROOT / 'datasets/BRPlates.yaml',  # dataset.yaml path
+        imgsz=(704, 704),  # inference size (height, width)
+        conf_thres=0.5,  # confidence threshold
+        iou_thres=0.6,  # NMS IOU threshold
+        max_det=1,  # maximum detections per image
         device='',  # cuda device, i.e. 0 or 0,1,2,3 or cpu
         view_img=False,  # show results
         save_txt=False,  # save results to *.txt
         save_conf=False,  # save confidences in --save-txt labels
         save_crop=False,  # save cropped prediction boxes
-        nosave=False,  # do not save images/videos
+        nosave=True,  # do not save images/videos
         classes=None,  # filter by class: --class 0, or --class 0 2 3
         agnostic_nms=False,  # class-agnostic NMS
         augment=False,  # augmented inference
         visualize=False,  # visualize features
         update=False,  # update all models
         project=ROOT / 'runs/detect',  # save results to project/name
-        name='exp',  # save results to project/name
+        name=str(datetime.now()).replace(" ",""),  # save results to project/name
         exist_ok=False,  # existing project/name ok, do not increment
         line_thickness=3,  # bounding box thickness (pixels)
         hide_labels=False,  # hide labels
@@ -81,7 +81,7 @@ def run(
         vid_stride=1,  # video frame-rate stride
         save_frame = False, #save frame from video
 		save_detected_frame = False, #save frame from video when plate detected
-        save_each_n_frames=1, #Saving crops frequency
+        save_each_n_frames=0, #Saving crops frequency
 ):
     source = str(source)
     save_img = not nosave and not source.endswith('.txt')  # save inference images
@@ -236,12 +236,12 @@ def run(
 
 def parse_opt():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--weights', nargs='+', type=str, default=ROOT / 'yolov5s.pt', help='model path or triton URL')
-    parser.add_argument('--source', type=str, default='rtsp://192.168.0.23:8554/video', help='file/dir/URL/glob, 0 for webcam')
-    parser.add_argument('--data', type=str, default=ROOT / 'data/BRPlates.yaml', help='(optional) dataset.yaml path')
-    parser.add_argument('--imgsz', '--img', '--img-size', nargs='+', type=int, default=[640], help='inference size h,w')
-    parser.add_argument('--conf-thres', type=float, default=0.25, help='confidence threshold')
-    parser.add_argument('--iou-thres', type=float, default=0.45, help='NMS IoU threshold')
+    parser.add_argument('--weights', nargs='+', type=str, default=ROOT / 'runs/train/680-64-150-n/weights/best.pt', help='model path or triton URL')
+    parser.add_argument('--source', type=str, default='rtsp://192.168.0.101:8554/video', help='file/dir/URL/glob, 0 for webcam')
+    parser.add_argument('--data', type=str, default=ROOT / 'datasets/BRPlates.yaml', help='(optional) dataset.yaml path')
+    parser.add_argument('--imgsz', '--img', '--img-size', nargs='+', type=int, default=[704], help='inference size h,w')
+    parser.add_argument('--conf-thres', type=float, default=0.5, help='confidence threshold')
+    parser.add_argument('--iou-thres', type=float, default=0.6, help='NMS IoU threshold')
     parser.add_argument('--max-det', type=int, default=1, help='maximum detections per image')
     parser.add_argument('--device', default='', help='cuda device, i.e. 0 or 0,1,2,3 or cpu')
     parser.add_argument('--view-img', action='store_true', help='show results')
@@ -255,7 +255,7 @@ def parse_opt():
     parser.add_argument('--visualize', action='store_true', help='visualize features')
     parser.add_argument('--update', action='store_true', help='update all models')
     parser.add_argument('--project', default=ROOT / 'runs/detect', help='save results to project/name')
-    parser.add_argument('--name', default='exp', help='save results to project/name')
+    parser.add_argument('--name', default= str(datetime.now()).replace(" ",""), help='save results to project/name')
     parser.add_argument('--exist-ok', action='store_true', help='existing project/name ok, do not increment')
     parser.add_argument('--line-thickness', default=3, type=int, help='bounding box thickness (pixels)')
     parser.add_argument('--hide-labels', default=False, action='store_true', help='hide labels')
@@ -265,7 +265,7 @@ def parse_opt():
     parser.add_argument('--vid-stride', type=int, default=1, help='video frame-rate stride')
     parser.add_argument('--save-frame', action='store_true', help='save frame to project/name/exp*/frames/frame*.png')
     parser.add_argument('--save-detected-frame', action='store_true', help='save frame with detection to project/name/exp*/frames/frame*.png')
-    parser.add_argument('--save-each-n-frames', type=int, default=1, help='frequency for saving frames when setting save-frame or save-detected-frame (trying to decrease img saving delay.)')
+    parser.add_argument('--save-each-n-frames', type=int, default=0, help='frequency for saving frames when setting save-frame or save-detected-frame (trying to decrease img saving delay.)')
     
     opt = parser.parse_args()
     opt.imgsz *= 2 if len(opt.imgsz) == 1 else 1  # expand
