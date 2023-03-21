@@ -265,7 +265,7 @@ def parse_opt():
     parser.add_argument('--vid-stride', type=int, default=1, help='video frame-rate stride')
     parser.add_argument('--save-frame', action='store_true', help='save frame to project/name/exp*/frames/frame*.png')
     parser.add_argument('--save-detected-frame', action='store_true', help='save frame with detection to project/name/exp*/frames/frame*.png')
-    parser.add_argument('--save-each-n-frames', type=int, default=0, help='frequency for saving frames when setting save-frame or save-detected-frame (trying to decrease img saving delay.)')
+    parser.add_argument('--save-each-n-frames', type=int, default=1, help='frequency for saving frames when setting save-frame or save-detected-frame (trying to decrease img saving delay.)')
     
     opt = parser.parse_args()
     opt.imgsz *= 2 if len(opt.imgsz) == 1 else 1  # expand
