@@ -81,7 +81,7 @@ def run(
         vid_stride=1,  # video frame-rate stride
         save_frame = False, #save frame from video
 		save_detected_frame = False, #save frame from video when plate detected
-        save_each_n_frames=0, #Saving crops frequency
+        save_each_n_frames=1, #Saving crops frequency
 ):
     source = str(source)
     save_img = not nosave and not source.endswith('.txt')  # save inference images
