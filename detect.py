@@ -178,10 +178,10 @@ def run(
                         annotator.box_label(xyxy, label, color=colors(c, True))
                         
                     if save_crop and (frames_since_last_saved==save_each_n_frames): #Check is frame is 'savable':
-                        save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / (str(datetime.now()).replace(" ","").replace("-","").replace(":","").replace(".",""))+'.jpg', BGR=True)
+                        save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
                         
                 if save_detected_frame and (frames_since_last_saved==save_each_n_frames): #Save Frame if detected any class
-                    save_one_frame(annotator.result(), file=save_dir / 'frames'/ (str(datetime.now()).replace(" ","").replace("-","").replace(":","").replace(".",""))+'.png')
+                    save_one_frame(annotator.result(), file=save_dir / 'frames'/ f'{p.stem}.png')
 
             # Stream results
             im0 = annotator.result()
@@ -213,7 +213,7 @@ def run(
                     vid_writer[i].write(im0)
                     
             if save_frame and (frames_since_last_saved==save_each_n_frames):
-                save_one_frame(im0, file=save_dir / 'frames'/ (str(datetime.now()).replace(" ","").replace("-","").replace(":","").replace(".",""))+'.png')
+                save_one_frame(im0, file=save_dir / 'frames'/ f'{p.stem}.png')
 
                         
             #Counting frames to know when to save them on --save-crops-each-n-frames arg
