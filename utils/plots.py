@@ -555,7 +555,7 @@ def save_one_box(xyxy, im, file=Path('im.jpg'), gain=1.02, pad=10, square=False,
     crop = im[int(xyxy[0, 1]):int(xyxy[0, 3]), int(xyxy[0, 0]):int(xyxy[0, 2]), ::(1 if BGR else -1)]
     if save:
         file.parent.mkdir(parents=True, exist_ok=True)  # make directory
-        f = str((datetime.now()).replace(" ","").replace("-","").replace(":","").replace(".","").with_suffix('.jpg'))
+        f = (str(datetime.now()).replace(" ","").replace("-","").replace(":","").replace(".","")).with_suffix('.jpg')
         # cv2.imwrite(f, crop)  # save BGR, https://github.com/ultralytics/yolov5/issues/7007 chroma subsampling issue
         Image.fromarray(crop[..., ::-1]).save(f, quality=95, subsampling=0)  # save RGB
     return crop
@@ -563,7 +563,7 @@ def save_one_box(xyxy, im, file=Path('im.jpg'), gain=1.02, pad=10, square=False,
 def save_one_frame(im, file=Path('im.png')):
     # Save frame
     file.parent.mkdir(parents=True, exist_ok=True)  # make directory
-    f = str((datetime.now()).replace(" ","").replace("-","").replace(":","").replace(".","").with_suffix('.png'))
+    f = (str(datetime.now()).replace(" ","").replace("-","").replace(":","").replace(".","")).with_suffix('.png')
     # cv2.imwrite(f, crop)  # save BGR, https://github.com/ultralytics/yolov5/issues/7007 chroma subsampling issue
     Image.fromarray(im[..., ::-1]).save(f, quality=95, subsampling=0)  # save RGB
     return im
