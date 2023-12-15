@@ -151,7 +151,14 @@ def run(
 
         # Second-stage classifier (optional)
         # pred = utils.general.apply_classifier(pred, classifier_model, im, im0s)
-
+        id = (
+            str(datetime.now())
+            .replace(" ", "")
+            .replace(":", "")
+            .replace(".", "")
+            .replace("-", "")
+        )
+        
         # Process predictions
         for i, det in enumerate(pred):  # per image
             seen += 1
@@ -201,12 +208,12 @@ def run(
                     # Check if  crop is 'savable'
                     if save_crop and (frames_since_last_saved == save_each_n_frames):
                         save_one_box(xyxy, imc, file=save_dir / 'crops' /
-                                     names[c] / f'{p.stem}.jpg', BGR=True)
+                                     names[c] / f'{id}_{p.stem}.jpg', BGR=True, id)
 
                 # Save Frame if detected any class
                 if save_detected_frame and (frames_since_last_saved == save_each_n_frames):
                     save_one_frame(annotator.result(),
-                                   file=save_dir / 'frames' / f'{p.stem}.png')
+                                   file=save_dir / 'frames' / f'{id}_{p.stem}.png')
 
             # Stream results
             im0 = annotator.result()
@@ -243,7 +250,7 @@ def run(
                     vid_writer[i].write(im0)
 
             if save_frame and not save_detected_frame and (frames_since_last_saved == save_each_n_frames):
-                save_one_frame(im0, file=save_dir / 'frames' / f'{p.stem}.png')
+                save_one_frame(im0, file=save_dir / 'frames' / f'{id}_{p.stem}.png')
 
             # Counting frames to know when to save them on --save-crops-each-n-frames arg
         if frames_since_last_saved == save_each_n_frames:
