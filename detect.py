@@ -212,7 +212,7 @@ def run(
                     # Check if  crop is 'savable'
                     if save_crop and (frames_since_last_saved == save_each_n_frames):
                         save_one_box(xyxy, imc, file=save_dir / 'crops' /
-                                     names[c] / f'{id}_{det_in_frame}_.jpg', BGR=True)
+                                     names[c] / f'{id}_{det_in_frame}.jpg', BGR=True)
                     
                     det_in_frame += 1
                     
@@ -256,7 +256,7 @@ def run(
                     vid_writer[i].write(im0)
 
             if save_frame and not save_detected_frame and (frames_since_last_saved == save_each_n_frames):
-                save_one_frame(im0, file=save_dir / 'frames' / f'{id}_{p.stem}_.png')
+                save_one_frame(im0, file=save_dir / 'frames' / f'{id}.png')
 
             # Counting frames to know when to save them on --save-crops-each-n-frames arg
         if frames_since_last_saved == save_each_n_frames:
