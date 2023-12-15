@@ -208,7 +208,7 @@ def run(
                     # Check if  crop is 'savable'
                     if save_crop and (frames_since_last_saved == save_each_n_frames):
                         save_one_box(xyxy, imc, file=save_dir / 'crops' /
-                                     names[c] / f'{id}_{p.stem}.jpg', BGR=True, id)
+                                     names[c] / f'{id}_{p.stem}.jpg', BGR=True)
 
                 # Save Frame if detected any class
                 if save_detected_frame and (frames_since_last_saved == save_each_n_frames):
