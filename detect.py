@@ -151,23 +151,25 @@ def run(
 
         # Second-stage classifier (optional)
         # pred = utils.general.apply_classifier(pred, classifier_model, im, im0s)
-        id = (
-            str(datetime.now())
-            .replace(" ", "")
-            .replace(":", "")
-            .replace(".", "")
-            .replace("-", "")
-        )
         
         # Process predictions
         for i, det in enumerate(pred):  # per image
+            
+            id = (
+                str(datetime.now())
+                .replace(" ", "")
+                .replace(":", "")
+                .replace(".", "")
+                .replace("-", "")
+            )
+            
             seen += 1
             if webcam:  # batch_size >= 1
                 p, im0, frame = path[i], im0s[i].copy(), dataset.count
                 s += f'{i}: '
             else:
                 p, im0, frame = path, im0s.copy(), getattr(dataset, 'frame', 0)
-
+            
             p = Path(p)  # to Path
             save_path = str(save_dir / p.name)  # im.jpg
             txt_path = str(save_dir / 'labels' / p.stem) + \
@@ -179,6 +181,8 @@ def run(
             annotator = Annotator(
                 im0, line_width=line_thickness, example=str(names))
             if len(det):
+                
+                det_in_frame = 0
                 # Rescale boxes from img_size to im0 size
                 det[:, :4] = scale_boxes(
                     im.shape[2:], det[:, :4], im0.shape).round()
@@ -208,12 +212,14 @@ def run(
                     # Check if  crop is 'savable'
                     if save_crop and (frames_since_last_saved == save_each_n_frames):
                         save_one_box(xyxy, imc, file=save_dir / 'crops' /
-                                     names[c] / f'{id}_{p.stem}.jpg', BGR=True)
-
+                                     names[c] / f'{id}_{det_in_frame}.jpg', BGR=True)
+                    
+                    det_in_frame += 1
+                    
                 # Save Frame if detected any class
                 if save_detected_frame and (frames_since_last_saved == save_each_n_frames):
                     save_one_frame(annotator.result(),
-                                   file=save_dir / 'frames' / f'{id}_{p.stem}.png')
+                                   file=save_dir / 'frames' / f'{id}.png')
 
             # Stream results
             im0 = annotator.result()
