@@ -216,6 +216,7 @@ def run(
                     
                     det_in_frame += 1
                     
+                det_in_frame = 0
                 # Save Frame if detected any class
                 if save_detected_frame and (frames_since_last_saved == save_each_n_frames):
                     save_one_frame(annotator.result(),
