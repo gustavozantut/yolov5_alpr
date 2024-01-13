@@ -24,7 +24,7 @@ RUN rm -rf /usr/src/app && mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 # Clone from repo
-RUN git clone https://github.com/gustavozantut/yolov5_live_results /usr/src/app
+RUN git clone https://github.com/gustavozantut/yolov5_alpr /usr/src/app
 
 # Install pip packages
 COPY requirements.txt .
@@ -39,7 +39,7 @@ ENV OMP_NUM_THREADS=1
 # Cleanup
 ENV DEBIAN_FRONTEND teletype
 
-ENTRYPOINT [ "python", "detect.py"]
+#ENTRYPOINT [ "python", "detect.py"]
 # Usage Examples -------------------------------------------------------------------------------------------------------
 
 # Build and Push
