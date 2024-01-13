@@ -1,10 +1,9 @@
-# YOLOv5 🚀 by Ultralytics, GPL-3.0 license
+# YOLOv5 🚀 by Ultralytics, AGPL-3.0 license
 # Builds ultralytics/yolov5:latest image on DockerHub https://hub.docker.com/r/ultralytics/yolov5
 # Image is CUDA-optimized for YOLOv5 single/multi-GPU training and inference
 
-# Start FROM NVIDIA PyTorch image https://ngc.nvidia.com/catalog/containers/nvidia:pytorch
-# FROM docker.io/pytorch/pytorch:latest
-FROM pytorch/pytorch:latest
+# Start FROM PyTorch image https://hub.docker.com/r/pytorch/pytorch
+FROM pytorch/pytorch:2.0.0-cuda11.7-cudnn8-runtime
 
 # Downloads to user config dir
 ADD https://ultralytics.com/assets/Arial.ttf https://ultralytics.com/assets/Arial.Unicode.ttf /root/.config/Ultralytics/
@@ -13,7 +12,7 @@ ADD https://ultralytics.com/assets/Arial.ttf https://ultralytics.com/assets/Aria
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt update
 RUN TZ=Etc/UTC apt install -y tzdata
-RUN apt install --no-install-recommends -y gcc git zip curl htop libgl1-mesa-glx libglib2.0-0 libpython3-dev gnupg
+RUN apt install --no-install-recommends -y gcc git zip curl htop libgl1 libglib2.0-0 libpython3-dev gnupg
 # RUN alias python=python3
 
 # Security updates
@@ -24,15 +23,14 @@ RUN apt upgrade --no-install-recommends -y openssl
 RUN rm -rf /usr/src/app && mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-# Copy contents
-# COPY . /usr/src/app  (issues as not a .git directory)
-RUN git clone https://github.com/gustavozantut/yolov5_alpr /usr/src/app
+# Clone from repo
+RUN git clone https://github.com/gustavozantut/yolov5_live_results /usr/src/app
 
 # Install pip packages
 COPY requirements.txt .
 RUN python3 -m pip install --upgrade pip wheel
 RUN pip install --no-cache -r requirements.txt albumentations comet gsutil notebook \
-    coremltools onnx onnx-simplifier onnxruntime 'openvino-dev>=2022.3'
+    coremltools onnx onnx-simplifier onnxruntime 'openvino-dev>=2023.0'
     # tensorflow tensorflowjs \
 
 # Set environment variables
@@ -73,4 +71,3 @@ ENTRYPOINT [ "python", "detect.py"]
 
 # GCP VM from Image
 # docker.io/ultralytics/yolov5:latest
-
