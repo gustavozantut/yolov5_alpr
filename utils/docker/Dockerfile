@@ -39,7 +39,7 @@ ENV OMP_NUM_THREADS=1
 # Cleanup
 ENV DEBIAN_FRONTEND teletype
 
-#ENTRYPOINT [ "python", "detect.py"]
+ENTRYPOINT [ "python", "detect.py"]
 # Usage Examples -------------------------------------------------------------------------------------------------------
 
 # Build and Push
