@@ -109,7 +109,7 @@ def run(
     source = str(source)
     save_img = not nosave and not source.endswith(".txt")  # save inference images
     is_file = Path(source).suffix[1:] in (IMG_FORMATS + VID_FORMATS)
-    is_url = source.lower().startswith(("rtsp://", "rtmp://", "http://", "https://"))
+    is_url = source.lower().startswith(("rtsp://", "rtmp://", "http://", "https://", 'tcp://'))
     webcam = source.isnumeric() or source.endswith(".streams") or (is_url and not is_file)
     screenshot = source.lower().startswith("screen")
     if is_url and is_file:
@@ -128,7 +128,7 @@ def run(
     # Dataloader
     bs = 1  # batch_size
     if webcam:
-        view_img = check_imshow(warn=True)
+        #view_img = check_imshow(warn=True)
         dataset = LoadStreams(source, img_size=imgsz, stride=stride, auto=pt, vid_stride=vid_stride)
         bs = len(dataset)
     elif screenshot:
