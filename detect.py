@@ -241,12 +241,12 @@ def run(
                         )
 
                     det_in_frame += 1
+                
+                # Save Frame if detected any class
+                if save_detected_frame and (frames_since_last_saved == save_each_n_frames):
+                    save_one_frame(annotator.result(), file=save_dir / "frames" / f"{id}.png")
 
             det_in_frame = 0
-
-            # Save Frame if detected any class
-            if save_detected_frame and (frames_since_last_saved == save_each_n_frames):
-                save_one_frame(annotator.result(), file=save_dir / "frames" / f"{id}.png")
 
             # Stream results
             im0 = annotator.result()
